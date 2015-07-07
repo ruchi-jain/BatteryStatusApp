@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/batteyTest" version="1.0.0" viewmodes="maximized">
+    <tizen:app-control>
+        <tizen:src name="index.html"/>
+        <tizen:operation name="http://tizen.org/appcontrol/operation/alarm"/>
+    </tizen:app-control>
+    <tizen:application id="jP7e0MexHd.batteyTest" package="jP7e0MexHd" required_version="2.3"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <icon src="icon.png"/>
+    <name>batteyTest</name>
+    <tizen:privilege name="http://tizen.org/privilege/notification"/>
+    <tizen:privilege name="http://tizen.org/privilege/alarm"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:profile name="mobile"/>
+    <tizen:setting screen-orientation="portrait" context-menu="enable" background-support="enable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

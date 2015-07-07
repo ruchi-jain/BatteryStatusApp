@@ -1,0 +1,193 @@
+<!DOCTYPE HTML >
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Battery Status</title>
+
+<!-- <script type="text/javascript" src="lib/tau/mobile/js/tau.js"></script> -->
+<!-- <script src="./lib/tau/mobile/js/jquery.min.js"></script> -->
+<!-- link rel="stylesheet" href="lib/tau/mobile/theme/default/tau.css"-->
+
+<!-- <script src="./js/core/core.js" data-main="./js/app.js"></script> -->
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"><</script>
+
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+<script type="text/javascript" src="js/battery.js"></script>
+<script type="text/javascript" src="js/notification.js"></script>
+
+<link rel='stylesheet' type='text/css' href='css/battery.css'>
+<!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+
+<script>
+window.addEventListener('tizenhwkey', function(e) {
+    if (e.keyName == "back") {
+    	if($.mobile.activePage.attr('id') === 'main'){
+        	try{
+               application.hide();
+            catch (error) {
+            console.error('Error: ' + error.message);
+                          }
+         } else if($.mobile.activePage.attr('id') === 'pageone')
+        	 window.history.back();
+                 }
+            	}
+    }
+});
+   </script>
+</head>
+<body>
+	<div data-role="page" id="main">
+		<div data-role="header">
+			<h1>Battery Status</h1>
+		</div>
+		<div data-role="content">
+			<div id="box">
+
+				<!--  <div id="text"> -->
+				<!-- <span style="display: block;margin-bottom:15px;font-size: medium;"><strong>Battery
+            specifications</strong></span> -->
+				<span style="display: block" id="level">Battery level:
+					unknown</span> <span style="display: block" id="status">Charging
+					status: unknown</span> <span style="display: block" id="charged">Battery
+					charged: unknown</span>
+				<!--      </div>  -->
+				<br>
+				<script>function sendAlert() {
+    		
+    		 //toastAlert('ToastWorks');
+        	}
+    </script>
+				<div id="battery" onClick="sendAlert()"></div>
+				<br>
+
+			</div>
+			<a href="#pageone"
+				class="ui-btn ui-icon-gear  ui-btn-icon-notext  ui-btn-icon-right">
+				setting</a>
+
+<!-- 			<div id="popupToast" class="ui-popup ui-popup-toast"> -->
+<!--    <div class="ui-popup-content">Saving contacts to the SIM card</div> -->
+<!-- </div> -->
+
+
+
+		</div>
+		<div data-role="footer" data-position="fixed">
+
+			<!-- <h4>Footer content</h4> -->
+		</div>
+	</div>
+
+	<div data-role="page" id="pageone" data-add-back-btn="true">
+		<div data-role="header" data-position="fixed">
+			<br> Battery Notifications
+		</div>
+		<!-- /header -->
+		<br>
+
+		<div data-role="content">
+			<table class="checkboxtable">
+				<tr>
+					<td id="td2">Notifications <br> <span
+						style="font-family: verdana; font-size: x-small;">Show
+							notification and battery percentage in status bar</span></td>
+					<td style="align: right"><input type="checkbox"
+						id="batterylevel" /></td>
+
+				</tr>
+<!-- 				<tr> -->
+<!-- 					<td id="td3">Alert on Full Charge</td> -->
+<!-- 					<td style="align: right"><input type="checkbox" -->
+<!-- 						id="batterylevelFull" /></td> -->
+
+<!-- 				</tr> -->
+
+
+			</table>
+			<br> <br> <a href="#main"
+				class="ui-btn ui-icon-back  ui-btn-icon-notext  ui-btn-icon-left ">
+			</a>
+		</div>
+		<!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<!-- <h4>Footer content</h4> -->
+		</div>
+		<!-- /footer -->
+	</div>
+	<!-- /page -->
+
+
+	<script type="text/javascript">
+
+  
+    // setup the image
+    var b = new Battery("assets/bat_empty.png", "assets/bat_full.png", 96, 168);
+    $("#battery").append(b.domElement);
+
+    // get the battery information
+    var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+   
+    // get the battery information to be displayed
+    $('#level').text("Battery level: " + Math.round(battery.level * 100) + "%");
+    $('#status').text("Charging status: " + ((battery.charging) ? "true" : "false"));
+    if (battery.charging) {
+        $('#charged').text("Battery time to charge: " + getTimeFormat(battery.chargingTime).hour + "hour " +  getTimeFormat(battery.chargingTime).minute + "minute");
+    } else {
+        $('#charged').text("Battery time left: " + getTimeFormat(battery.dischargingTime).hour + "hour " +  getTimeFormat(battery.dischargingTime).minute + "minute");
+    }
+    b.updateBattery(battery.level * 100);
+
+
+    // when the loader is connected
+    battery.addEventListener("chargingchange", function (e) {
+        $('#status').text("Charging status: " + ((battery.charging) ? "true" : "false"));
+    }, false);
+
+    // when charging time changes update the time to charge / time left
+    battery.addEventListener("chargingtimechange", function (e) {
+        if (battery.charging) {
+            $('#charged').text("Battery time to charge: " + getTimeFormat(battery.chargingTime).hour + "hour " +  getTimeFormat(battery.chargingTime).minute + "minute");
+        } else {
+            $('#charged').text("Battery time left: " + getTimeFormat(battery.dischargingTime).hour + "hour " +  getTimeFormat(battery.dischargingTime).minute + "minute");
+        }
+
+    }, false);
+
+    // when dischargingtime changes update the time to charge / time left
+    battery.addEventListener("dischargingtimechange", function (e) {
+        if (battery.charging) {
+            $('#charged').text("Battery time to charge: " + getTimeFormat(battery.chargingTime).hour + "hour " +  getTimeFormat(battery.chargingTime).minute + "minute");
+        } else {
+            $('#charged').text("Battery time left: " + getTimeFormat(battery.dischargingTime).hour + "hour " +  getTimeFormat(battery.dischargingTime).minute + "minute");
+        }
+    }, false);
+
+    // listener that is notified when the level changes
+    battery.addEventListener("levelchange", function (e) {
+        $('#level').text("Battery level: " + Math.round(battery.level * 100) + "%");
+        b.updateBattery(100 * battery.level)
+    }, false);
+
+    /* Time is received in seconds, converted to hours and minutes, and returned */
+    function getTimeFormat(time) 
+    { 
+      var tempMinute =Math.floor( time / 60);
+      var hour   = Math.floor( tempMinute / 60);
+      var minute = tempMinute - hour*60;
+  
+    minute = minute < 10 ? "0" + minute : minute;
+    if (isNaN(minute))
+        minute="infinity";
+    if (isNaN(hour))
+        hour="infinity";
+//alert(hour + "minute " + minute);
+    return {"hour":  hour , "minute": minute };
+       
+    }
+</script>
+
+</body>
+</html>
